@@ -1,6 +1,5 @@
-import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
-const bcrypt = require(' bcryptjs ');
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcryptjs');
 const { Subscription } = require('../../helpers/constants');
 const SALT_WORK_FACTOR = 8;
 
