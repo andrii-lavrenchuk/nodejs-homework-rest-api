@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 // const validate = require('./validation');
 const guard = require('../../../helpers/guard');
+const { createAccountLimiter } = require('../../../helpers/rate-limit-reg');
 
 const userController = require('../../../controllers/users');
 
-router.post('/registration', userController.reg);
+router.post('/registration', createAccountLimiter, userController.reg);
 router.post('/login', userController.login);
 router.post('/logout', guard, userController.logout);
 
