@@ -20,6 +20,7 @@ const contactSchema = new Schema({
     minlength: 10,
     maxlength: 13,
   },
+
   owner: {
     type: SchemaTypes.ObjectId,
     ref: 'user',
