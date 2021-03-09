@@ -9,7 +9,10 @@ const listContacts = async (
     {
       limit,
       page,
-      sort: { name: 1 },
+      sort: {
+        ...(sortBy ? { [`${sortBy}`]: 1 } : {}),
+        ...(sortByDesc ? { [`${sortByDesc}`]: -1 } : {}),
+      },
       populate: {
         path: 'owner',
         select: 'name email subscription -_id',
