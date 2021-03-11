@@ -11,7 +11,12 @@ const userController = require('../../../controllers/users');
 router.post('/registration', createAccountLimiter, userController.reg);
 router.post('/login', userController.login);
 router.post('/logout', guard, userController.logout);
-router.patch('/avatars', upload.single('avatar'), () => {});
+router.patch(
+  '/avatars',
+  guard,
+  upload.single('avatar'),
+  userController.avatars,
+);
 
 // router
 //   .get('/', contactsController.listContacts)
