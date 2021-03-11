@@ -76,7 +76,7 @@ const logout = async (req, res, _next) => {
   return res.status(HttpCode.NO_CONTENT).json();
 };
 
-const avatars = async (req, res, _next) => {
+const avatars = async (req, res, next) => {
   try {
     const id = req.user.id;
     const avatarUrl = await saveAvatarToStatic(req);
