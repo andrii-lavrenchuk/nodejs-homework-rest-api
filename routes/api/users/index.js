@@ -4,6 +4,8 @@ const router = express.Router();
 const guard = require('../../../helpers/guard');
 const upload = require('../../../helpers/upload');
 
+const { validateUploadAvatar } = require('./validation');
+
 const { createAccountLimiter } = require('../../../helpers/rate-limit-reg');
 
 const userController = require('../../../controllers/users');
@@ -15,6 +17,7 @@ router.patch(
   '/avatars',
   guard,
   upload.single('avatar'),
+  validateUploadAvatar,
   userController.avatars,
 );
 

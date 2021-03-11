@@ -96,7 +96,7 @@ const avatars = async (req, res, _next) => {
     const avatarUrl = path.normalize(path.join(id, newNameAvatar));
     try {
       await fs.unlink(
-        path.join(process.cwd(), AVATARS_OF_USERS, req.uder.avatar),
+        path.join(process.cwd(), AVATARS_OF_USERS, req.user.avatar),
       );
     } catch (error) {
       console.log(error.message);
