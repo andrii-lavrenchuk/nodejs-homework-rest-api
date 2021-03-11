@@ -76,23 +76,6 @@ const logout = async (req, res, _next) => {
   return res.status(HttpCode.NO_CONTENT).json();
 };
 
-const avatars = async (req, res, next) => {
-  try {
-    const id = req.user.id;
-    const avatarUrl = await saveAvatarToStatic(req);
-    await Users.updateAvatar(id, avatarUrl);
-    return res.json({
-      status: 'Success',
-      code: HttpCode.OK,
-      data: {
-        avatarUrl,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 const saveAvatarToStatic = async req => {
   const id = req.user.id;
 
@@ -117,4 +100,20 @@ const saveAvatarToStatic = async req => {
   return avatarUrl;
 };
 
+const avatars = async (req, res, next) => {
+  try {
+    const id = req.user.id;
+    const avatarUrl = await saveAvatarToStatic(req);
+    await Users.updateAvatar(id, avatarUrl);
+    return res.json({
+      status: 'Success',
+      code: HttpCode.OK,
+      data: {
+        avatarUrl,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = { reg, login, logout, avatars };

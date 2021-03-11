@@ -10,7 +10,7 @@ const quard = (req, res, next) => {
         status: 'Error',
         code: HttpCode.FORBIDDEN,
         data: 'Forbidden',
-        message: 'Access is denied',
+        message: 'Not authorized',
       });
     }
     req.user = user;
