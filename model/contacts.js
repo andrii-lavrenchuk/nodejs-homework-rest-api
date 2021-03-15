@@ -20,8 +20,8 @@ const listContacts = async (
       },
     },
   );
-  const { docs: coontacts, totalDocs: total } = results;
-  return { total: total.toString(), limit, page, coontacts };
+  const { docs: contacts, totalDocs: total } = results;
+  return { total: total.toString(), limit, page, contacts };
 };
 
 const getContactById = async (contactId, userId) => {
