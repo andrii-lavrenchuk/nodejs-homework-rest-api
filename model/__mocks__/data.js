@@ -11,7 +11,7 @@ const User = {
 const users = [];
 users[0] = User;
 
-const newUser = { email: 'test@test.com', password: '1234567' };
+const newUser = { email: 'example@test.com', password: '1234567' };
 
 const contacts = [
   {
