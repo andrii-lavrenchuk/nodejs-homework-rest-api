@@ -1,5 +1,7 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
+const fs = require('fs').promises;
+
 require('dotenv').config();
 const { User, newUser } = require('../model/__mocks__/data');
 const app = require('../app');
@@ -9,7 +11,6 @@ const issueToken = (payload, secret) => jwt.sign(payload, secret);
 const token = issueToken({ id: User._id }, SECRET_KEY);
 User.token = token;
 
-jest.mock('../model/contacts.js');
 jest.mock('../model/users.js');
 
 describe('Testing the route api/users', () => {
@@ -54,6 +55,20 @@ describe('Testing the route api/users', () => {
 
     expect(res.status).toEqual(401);
     expect(res.body).toBeDefined();
+    done();
+  });
+
+  it('should return 200 status for upload avatar', async done => {
+    const buffer = await fs.readFile('./test/useravatar.jpg');
+    const res = await request(app)
+      .patch('/api/users/avatars')
+      .set('Authorization', `Bearer ${token}`)
+      .attach('avatar', buffer, 'useravatar.jpg');
+
+    console.log('RESPONSE: ', res.body);
+    expect(res.status).toEqual(200);
+    expect(res.body).toBeDefined();
+
     done();
   });
 });

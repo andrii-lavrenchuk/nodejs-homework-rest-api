@@ -34,7 +34,11 @@ const updateToken = jest.fn((id, token) => {
 });
 
 const updateAvatar = jest.fn((id, avatarURL) => {
-  return {};
+  const [user] = users.filter(el => String(el._id) === String(id));
+  if (user) {
+    user.avatarURL = avatarURL;
+  }
+  return user.avatarURL;
 });
 
 module.exports = {
