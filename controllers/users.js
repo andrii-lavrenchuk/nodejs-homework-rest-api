@@ -3,8 +3,10 @@ const Users = require('../model/users');
 const fs = require('fs').promises;
 const path = require('path');
 const Jimp = require('jimp');
+const { nanoid } = require('nanoid');
 
 const { HttpCode } = require('../helpers/constants');
+const EmailService = require('../services/email');
 const createFolderIsExist = require('../helpers/create-dir');
 
 require('dotenv').config();
@@ -12,7 +14,7 @@ const SECRET_KEY = process.env.JWT_SECRET;
 
 const reg = async (req, res, next) => {
   try {
-    const { email } = req.body;
+    const { email, name } = req.body;
     const user = await Users.findByEmail(email);
 
     if (user) {
@@ -23,8 +25,15 @@ const reg = async (req, res, next) => {
         message: 'User with this email is already exist',
       });
     }
+    const verifyToken = nanoid();
+    const emailService = new EmailService(process.env.NODE_ENV);
+    await emailService.sendEmail(verifyToken, email, name);
 
-    const newUser = await Users.create(req.body);
+    const newUser = await Users.create({
+      ...req.body,
+      verify: false,
+      verifyToken,
+    });
     return res.status(HttpCode.CREATED).json({
       status: 'Success',
       code: HttpCode.CREATED,
@@ -46,7 +55,7 @@ const login = async (req, res, next) => {
     const user = await Users.findByEmail(email);
     const isValidPassword = await user?.validPassword(password);
 
-    if (!user || !isValidPassword) {
+    if (!user || !isValidPassword || !user.verify) {
       return res.status(HttpCode.UNAUTHORIZED).json({
         status: 'Error',
         code: HttpCode.UNAUTHORIZED,
@@ -116,4 +125,27 @@ const avatars = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { reg, login, logout, avatars };
+
+const verify = async (req, res, _next) => {
+  try {
+    const user = Users.findByVerifyToken(req.para, s.token);
+    if (user) {
+      await Users.updateVerifyToken(user.id, true, null);
+      return res.json({
+        status: 'Success',
+        code: HttpCode.OK,
+        message: 'Verification successful',
+      });
+    }
+    return res.status(HttpCode.BAD_REQUEST).json({
+      status: 'Error',
+      code: HttpCode.BAD_REQUEST,
+      data: 'Bad request',
+      message: 'Link is not valid',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { reg, login, logout, avatars, verify };
