@@ -20,7 +20,7 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      required: ['true', 'This fild is required'],
+      required: [true, 'Email required'],
       unique: true,
       validate(value) {
         const reg = /\S+@\S+\.\S+/;
@@ -29,7 +29,7 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: ['true', 'This fild is required'],
+      required: [true, 'Password required'],
     },
     avatar: {
       type: String,
@@ -47,7 +47,7 @@ const userSchema = new Schema(
     },
     verifyToken: {
       type: String,
-      required: ['true', 'Vetify token required'],
+      required: [true, 'Verify token required'],
     },
   },
   {
