@@ -4,12 +4,12 @@ const { HttpCode } = require('../helpers/constants');
 const listContacts = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const contacts = await Contacts.listContacts(userId);
+    const contacts = await Contacts.listContacts(userId, req.query);
     return res.json({
       status: 'Success',
       code: HttpCode.OK,
       data: {
-        contacts,
+        ...contacts,
       },
     });
   } catch (error) {
@@ -31,9 +31,9 @@ const getContactById = async (req, res, next) => {
         },
       });
     } else {
-      return res.status(HttpCode.BAD_REQUEST).json({
+      return res.status(HttpCode.NOT_FOUND).json({
         status: 'Error',
-        code: HttpCode.BAD_REQUEST,
+        code: HttpCode.NOT_FOUND,
         message: 'Not found',
       });
     }
@@ -74,9 +74,9 @@ const removeContact = async (req, res, next) => {
         },
       });
     } else {
-      return res.status(HttpCode.BAD_REQUEST).json({
+      return res.status(HttpCode.NOT_FOUND).json({
         status: 'Error',
-        code: HttpCode.BAD_REQUEST,
+        code: HttpCode.NOT_FOUND,
         message: 'Not found',
       });
     }
@@ -104,9 +104,9 @@ const updateContact = async (req, res, next) => {
         },
       });
     } else {
-      return res.status(HttpCode.BAD_REQUEST).json({
+      return res.status(HttpCode.NOT_FOUND).json({
         status: 'Error',
-        code: HttpCode.BAD_REQUEST,
+        code: HttpCode.NOT_FOUND,
         message: 'Not found',
       });
     }

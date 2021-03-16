@@ -1,3 +1,4 @@
+const { required } = require('joi');
 const Joi = require('joi');
 
 const schemaCreateContact = Joi.object({
@@ -18,14 +19,12 @@ const schemaCreateContact = Joi.object({
 });
 
 const schemaUpdateContact = Joi.object({
-  name: Joi.string().min(3).max(30),
+  name: Joi.string().min(3).max(30).required(),
   email: Joi.string().email(),
-  phone: Joi.string()
+  phone: Joi.string().pattern(/^[0-9]+$/),
 
-    .pattern(/^[0-9]+$/)
-    .required(),
   password: Joi.string().min(7).max(15),
-  subscription: Joi.string(),
+  subscription: Joi.any().valid('free', 'pro', 'premium'),
 });
 
 const validate = (schema, obj, next) => {
