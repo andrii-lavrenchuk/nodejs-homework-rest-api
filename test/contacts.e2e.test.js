@@ -16,7 +16,7 @@ describe('Testing the route api/contacts', () => {
   let idNewContact;
 
   describe('Should handle get request', () => {
-    it('should return 200 status for get all cats', async done => {
+    it('should return 200 status for get all cats', async () => {
       const res = await request(app)
         .get('/api/contacts')
         .set('Authorization', `Bearer ${token}`);
@@ -24,10 +24,9 @@ describe('Testing the route api/contacts', () => {
       expect(res.status).toEqual(200);
       expect(res.body).toBeDefined();
       expect(res.body.data.contacts).toBeInstanceOf(Array);
-      done();
     });
 
-    it('should return 200 status find by id', async done => {
+    it('should return 200 status find by id', async () => {
       const contact = contacts[0];
       const res = await request(app)
         .get(`/api/contacts/${contact._id}`)
@@ -37,11 +36,9 @@ describe('Testing the route api/contacts', () => {
       expect(res.body).toBeDefined();
       expect(res.body.data.contact).toHaveProperty('_id');
       expect(res.body.data.contact._id).toBe(contact._id);
-
-      done();
     });
 
-    it('should return 404 status  by wrong id', async done => {
+    it('should return 404 status  by wrong id', async () => {
       const wrongId = 123676;
       const res = await request(app)
         .get(`/api/contacts/${wrongId}`)
@@ -50,12 +47,10 @@ describe('Testing the route api/contacts', () => {
 
       expect(res.status).toEqual(404);
       expect(res.body).toBeDefined();
-
-      done();
     });
   });
   describe('Should handle post request', () => {
-    it('should return 201 status for created contact', async done => {
+    it('should return 201 status for created contact', async () => {
       const res = await request(app)
         .post(`/api/contacts`)
         .set('Authorization', `Bearer ${token}`)
@@ -65,9 +60,8 @@ describe('Testing the route api/contacts', () => {
       expect(res.status).toEqual(201);
       expect(res.body).toBeDefined();
       idNewContact = res.body.data.contact._id;
-      done();
     });
-    it('should return 400 status for wrong field', async done => {
+    it('should return 400 status for wrong field', async () => {
       const res = await request(app)
         .post(`/api/contacts`)
         .set('Authorization', `Bearer ${token}`)
@@ -76,9 +70,8 @@ describe('Testing the route api/contacts', () => {
 
       expect(res.status).toEqual(400);
       expect(res.body).toBeDefined();
-      done();
     });
-    it('should return 400 status without required field name', async done => {
+    it('should return 400 status without required field name', async () => {
       const res = await request(app)
         .post(`/api/contacts`)
         .set('Authorization', `Bearer ${token}`)
@@ -87,11 +80,10 @@ describe('Testing the route api/contacts', () => {
 
       expect(res.status).toEqual(400);
       expect(res.body).toBeDefined();
-      done();
     });
   });
   describe('Should handle patch request', () => {
-    it('Update contact success should return 200 status', async done => {
+    it('Update contact success should return 200 status', async () => {
       const res = await request(app)
         .patch(`/api/contacts/${idNewContact}`)
         .set('Authorization', `Bearer ${token}`)
@@ -101,10 +93,9 @@ describe('Testing the route api/contacts', () => {
       expect(res.status).toEqual(200);
       expect(res.body).toBeDefined();
       expect(res.body.data.contact.name).toBe('test');
-      done();
     });
 
-    it('Wrong field subscription should return 400 status', async done => {
+    it('Wrong field subscription should return 400 status', async () => {
       const res = await request(app)
         .patch(`/api/contacts/${idNewContact}`)
         .set('Authorization', `Bearer ${token}`)
@@ -113,10 +104,9 @@ describe('Testing the route api/contacts', () => {
 
       expect(res.status).toEqual(400);
       expect(res.body).toBeDefined();
-      done();
     });
 
-    it('Update contact with wrong id should return 404 status', async done => {
+    it('Update contact with wrong id should return 404 status', async () => {
       const res = await request(app)
         .patch('/api/contacts/12345')
         .set('Authorization', `Bearer ${token}`)
@@ -125,10 +115,9 @@ describe('Testing the route api/contacts', () => {
 
       expect(res.status).toEqual(404);
       expect(res.body).toBeDefined();
-      done();
     });
 
-    it('Should return 400 status for empty request', async done => {
+    it('Should return 400 status for empty request', async () => {
       const res = await request(app)
         .patch(`/api/contacts/${idNewContact}`)
         .set('Authorization', `Bearer ${token}`)
@@ -137,28 +126,25 @@ describe('Testing the route api/contacts', () => {
 
       expect(res.status).toEqual(400);
       expect(res.body).toBeDefined();
-      done();
     });
   });
   describe('Should handle delete request', () => {
-    it('Remove contact success should return 200 status', async done => {
+    it('Remove contact success should return 200 status', async () => {
       const res = await request(app)
         .delete(`/api/contacts/${idNewContact}`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(res.status).toEqual(200);
       expect(res.body).toBeDefined();
-      done();
     });
 
-    it('Should return 404 status with wrong id', async done => {
+    it('Should return 404 status with wrong id', async () => {
       const res = await request(app)
         .delete(`/api/contacts/${123}`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(res.status).toEqual(404);
       expect(res.body).toBeDefined();
-      done();
     });
   });
 });

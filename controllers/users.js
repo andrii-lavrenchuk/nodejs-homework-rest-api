@@ -126,7 +126,7 @@ const avatars = async (req, res, next) => {
   }
 };
 
-const verify = async (req, res, _next) => {
+const verify = async (req, res, next) => {
   try {
     const user = await Users.findByVerifyToken(req.params.token);
     if (user) {

@@ -23,6 +23,7 @@ class EmailService {
         break;
     }
   }
+
   #createTemplate(verifyToken, name = 'Guest') {
     const mailGenerator = new this.#GenerateTemplate({
       theme: 'neopolitan',
@@ -39,7 +40,7 @@ class EmailService {
         action: {
           instructions: 'To verify your email press the button',
           button: {
-            color: '#22BC66', // Optional action button color
+            color: '#22BC66',
             text: 'Confirm your account',
             link: `${this.link}/api/users/verify/${verifyToken}`,
           },
@@ -50,16 +51,17 @@ class EmailService {
     };
     return mailGenerator.generate(template);
   }
+
   async sendEmail(verifyToken, email, name) {
     const emailBody = this.#createTemplate(verifyToken, name);
     this.#sender.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
       to: email,
-      from: 'test5251@ukr.net', // Use the email address or domain you verified above
+      from: 'test5251@ukr.net',
       subject: 'Confirm registration',
       html: emailBody,
     };
-    //ES6
+
     await this.#sender.send(msg);
   }
 }
