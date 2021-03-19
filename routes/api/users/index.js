@@ -20,6 +20,7 @@ router.patch(
   validateUploadAvatar,
   userController.avatars,
 );
+router.get('/verify/:token', userController.verify);
 
 // router
 //   .get('/', contactsController.listContacts)

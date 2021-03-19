@@ -14,18 +14,17 @@ User.token = token;
 jest.mock('../model/users.js');
 
 describe('Testing the route api/users', () => {
-  it('should return 201 status for registration', async done => {
+  it('should return 201 status for registration', async () => {
     const res = await request(app)
-      .post(`/api/users/registration`)
+      .post('/api/users/registration')
       .send(newUser)
       .set('Accept', 'application/json');
 
     expect(res.status).toEqual(201);
     expect(res.body).toBeDefined();
-    done();
   });
 
-  it('should return 409 status for registration - email is already exsist', async done => {
+  it('should return 409 status for registration - email is already exsist', async () => {
     const res = await request(app)
       .post('/api/users/registration')
       .send(newUser)
@@ -33,10 +32,9 @@ describe('Testing the route api/users', () => {
 
     expect(res.status).toEqual(409);
     expect(res.body).toBeDefined();
-    done();
   });
 
-  it('should return 200 status for login', async done => {
+  it('should return 200 status for login', async () => {
     const res = await request(app)
       .post(`/api/users/login`)
       .send(newUser)
@@ -44,10 +42,9 @@ describe('Testing the route api/users', () => {
 
     expect(res.status).toEqual(200);
     expect(res.body).toBeDefined();
-    done();
   });
 
-  it('should return 401 status for login with wrong credentials', async done => {
+  it('should return 401 status for login with wrong credentials', async () => {
     const res = await request(app)
       .post(`/api/users/login`)
       .send({ email: 'qwe@gmail.com', password: '234234' })
@@ -55,10 +52,9 @@ describe('Testing the route api/users', () => {
 
     expect(res.status).toEqual(401);
     expect(res.body).toBeDefined();
-    done();
   });
 
-  it('should return 200 status for upload avatar', async done => {
+  it('should return 200 status for upload avatar', async () => {
     const buffer = await fs.readFile('./test/useravatar.jpg');
     const res = await request(app)
       .patch('/api/users/avatars')
@@ -68,7 +64,5 @@ describe('Testing the route api/users', () => {
     console.log('RESPONSE: ', res.body);
     expect(res.status).toEqual(200);
     expect(res.body).toBeDefined();
-
-    done();
   });
 });
